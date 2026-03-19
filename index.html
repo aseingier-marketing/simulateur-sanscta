@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulateur CA Dormant — Virtuodev</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    /* Configuration Tailwind — couleurs custom */
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            nuit:      '#1e293b',
+            electrique:'#3b82f6',
+            clair:     '#f8fafc',
+          },
+          fontFamily: {
+            sans: ['-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Helvetica Neue','Arial','sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Transition douce sur tous les éléments de résultat */
+    .resultat-animate {
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+    /* Focus ring personnalisé */
+    input[type="number"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    /* Supprime les flèches des inputs number sur Chrome */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Supprime les flèches sur Firefox */
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+<body class="bg-clair font-sans text-nuit min-h-screen py-10 px-4">
+
+  <!-- ===== CONTAINER PRINCIPAL ===== -->
+  <div class="max-w-3xl mx-auto">
+
+    <!-- En-tête -->
+    <header class="text-center mb-10">
+      <p class="text-sm font-semibold tracking-widest text-electrique uppercase mb-2">Outil gratuit</p>
+      <h1 class="text-3xl sm:text-4xl font-bold text-nuit leading-tight mb-3">
+        Combien de CA dort dans<br class="hidden sm:block" /> vos devis non signés ?
+      </h1>
+      <p class="text-slate-500 text-base max-w-lg mx-auto">
+        Renseignez vos chiffres ci-dessous et découvrez en temps réel le potentiel que vous laissez sur la table chaque année.
+      </p>
+    </header>
+
+    <!-- ===== FORMULAIRE INPUTS ===== -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 mb-6">
+      <h2 class="text-lg font-semibold text-nuit mb-6">Vos données actuelles</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+        <!-- Input 1 : Nombre de devis -->
+        <div class="flex flex-col gap-1.5">
+          <label for="nbDevis" class="text-sm font-medium text-slate-700">
+            Devis envoyés / mois
+          </label>
+          <input
+            id="nbDevis"
+            type="number"
+            min="1"
+            max="500"
+            value="20"
+            class="w-full rounded-xl border border-slate-300 bg-clair px-4 py-3 text-nuit text-base resultat-animate"
+          />
+          <span class="text-xs text-slate-400">Entre 1 et 500</span>
+        </div>
+
+        <!-- Input 2 : Valeur moyenne -->
+        <div class="flex flex-col gap-1.5">
+          <label for="valeurDevis" class="text-sm font-medium text-slate-700">
+            Valeur moyenne d'un devis (€)
+          </label>
+          <input
+            id="valeurDevis"
+            type="number"
+            min="100"
+            max="100000"
+            value="3500"
+            class="w-full rounded-xl border border-slate-300 bg-clair px-4 py-3 text-nuit text-base resultat-animate"
+          />
+          <span class="text-xs text-slate-400">Entre 100 € et 100 000 €</span>
+        </div>
+
+        <!-- Input 3 : Taux de signature -->
+        <div class="flex flex-col gap-1.5">
+          <label for="tauxSignature" class="text-sm font-medium text-slate-700">
+            Taux de signature actuel (%)
+          </label>
+          <input
+            id="tauxSignature"
+            type="number"
+            min="0"
+            max="100"
+            value="25"
+            class="w-full rounded-xl border border-slate-300 bg-clair px-4 py-3 text-nuit text-base resultat-animate"
+          />
+          <span class="text-xs text-slate-400">Entre 0 % et 100 %</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== RÉSULTAT PRINCIPAL — CA DORMANT ANNUEL ===== -->
+    <section class="bg-nuit rounded-2xl p-6 sm:p-8 mb-6 text-center">
+      <p class="text-slate-400 text-sm font-medium uppercase tracking-widest mb-2">
+        Votre CA dormant annuel
+      </p>
+      <p id="caDormantAnnuel" class="text-4xl sm:text-5xl font-bold text-white resultat-animate mb-2">
+        — €
+      </p>
+      <p class="text-slate-400 text-sm">
+        soit <span id="caDormantMensuel" class="text-white font-medium resultat-animate">— €</span> par mois qui restent sur la table
+      </p>
+    </section>
+
+    <!-- ===== TABLEAU COMPARATIF ===== -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 mb-6 overflow-x-auto">
+      <h2 class="text-lg font-semibold text-nuit mb-5">Et si vous amélioriez votre taux de signature ?</h2>
+
+      <table class="w-full text-sm min-w-[480px]">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left text-slate-500 font-medium pb-3 pr-4">Scénario</th>
+            <th class="text-right text-slate-500 font-medium pb-3 px-4">Taux</th>
+            <th class="text-right text-slate-500 font-medium pb-3 px-4">CA dormant / an</th>
+            <th class="text-right text-slate-500 font-medium pb-3 pl-4">Gain vs actuel</th>
+          </tr>
+        </thead>
+        <tbody id="tableauScenarios">
+          <!-- Généré par JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== EXPLICATION PÉDAGOGIQUE ===== -->
+    <section class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-8 text-sm text-slate-600">
+      <p class="font-medium text-nuit mb-1">Comment est calculé le CA dormant ?</p>
+      <p>
+        <span class="font-mono bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs text-nuit">
+          CA dormant mensuel = devis × valeur × (1 − taux de signature)
+        </span>
+      </p>
+      <p class="mt-2">
+        C'est le chiffre d'affaires que vous avez <strong>prospecté, chiffré et présenté</strong>, mais qui n'est pas encore transformé en contrat. Un suivi structuré permet d'en récupérer une partie significative.
+      </p>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="text-center">
+      <p class="text-nuit text-sm mb-4">
+        Vous voulez un plan d'action concret pour récupérer ce CA dormant ?
+      </p>
+      <a
+        id="ctaDiagnostic"
+        href="#"
+        class="inline-block bg-electrique hover:bg-blue-600 text-white font-semibold text-base px-8 py-4 rounded-xl transition-colors duration-150 shadow-md hover:shadow-lg"
+      >
+        Réserver mon diagnostic gratuit →
+      </a>
+      <p class="text-xs text-slate-400 mt-3">30 min · 100% gratuit · sans engagement</p>
+    </section>
+
+    <!-- Footer minimaliste -->
+    <footer class="text-center mt-12 text-xs text-slate-400">
+      © <span id="annee"></span> Virtuodev · Outil de simulation — résultats à titre indicatif
+    </footer>
+
+  </div><!-- /container -->
+
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    /* -------------------------------------------------------
+       Constantes et configuration
+    ------------------------------------------------------- */
+    const AMELIORATIONS = [10, 20, 30]; // points de % ajoutés au taux actuel
+    const MOIS_PAR_AN   = 12;
+
+    /* -------------------------------------------------------
+       Références DOM
+    ------------------------------------------------------- */
+    const inputNbDevis      = document.getElementById('nbDevis');
+    const inputValeurDevis  = document.getElementById('valeurDevis');
+    const inputTauxSignature= document.getElementById('tauxSignature');
+
+    const affichageCaAnnuel   = document.getElementById('caDormantAnnuel');
+    const affichageCaMensuel  = document.getElementById('caDormantMensuel');
+    const corpsTableau        = document.getElementById('tableauScenarios');
+
+    /* -------------------------------------------------------
+       Formatage des nombres — séparateur de milliers = espace
+       ex. 125000 → "125 000 €"
+    ------------------------------------------------------- */
+    function formaterEuros(montant) {
+      return new Intl.NumberFormat('fr-FR', {
+        style: 'currency',
+        currency: 'EUR',
+        maximumFractionDigits: 0,
+      }).format(Math.round(montant));
+    }
+
+    function formaterPourcentage(valeur) {
+      return new Intl.NumberFormat('fr-FR', {
+        style: 'percent',
+        maximumFractionDigits: 1,
+      }).format(valeur / 100);
+    }
+
+    /* -------------------------------------------------------
+       Calcul du CA dormant pour un taux de signature donné
+    ------------------------------------------------------- */
+    function calculerCaDormant(nbDevis, valeurDevis, tauxSignature) {
+      const caTotalMensuel  = nbDevis * valeurDevis;
+      const caSigneMensuel  = caTotalMensuel * (tauxSignature / 100);
+      const caDormantMensuel = caTotalMensuel - caSigneMensuel;
+      const caDormantAnnuel  = caDormantMensuel * MOIS_PAR_AN;
+      return { caDormantMensuel, caDormantAnnuel };
+    }
+
+    /* -------------------------------------------------------
+       Lecture et validation des inputs
+       Retourne null si une valeur est invalide
+    ------------------------------------------------------- */
+    function lireInputs() {
+      const nbDevis       = parseFloat(inputNbDevis.value);
+      const valeurDevis   = parseFloat(inputValeurDevis.value);
+      const tauxSignature = parseFloat(inputTauxSignature.value);
+
+      if (
+        isNaN(nbDevis)       || nbDevis < 1        || nbDevis > 500     ||
+        isNaN(valeurDevis)   || valeurDevis < 100   || valeurDevis > 100000 ||
+        isNaN(tauxSignature) || tauxSignature < 0   || tauxSignature > 100
+      ) {
+        return null;
+      }
+      return { nbDevis, valeurDevis, tauxSignature };
+    }
+
+    /* -------------------------------------------------------
+       Génère une ligne du tableau comparatif
+    ------------------------------------------------------- */
+    function genererLigneTableau(label, taux, caDormantAnnuel, gainAnnuel, gainPourcent, estActuel) {
+      const tr = document.createElement('tr');
+      tr.className = estActuel
+        ? 'border-b border-slate-100 bg-slate-50'
+        : 'border-b border-slate-100 hover:bg-blue-50 transition-colors duration-100';
+
+      /* Couleur du gain : vert si positif, neutre si nul */
+      const couleurGain = gainAnnuel > 0 ? 'text-emerald-600 font-semibold' : 'text-slate-500';
+      const texteGain   = gainAnnuel > 0
+        ? `+${formaterEuros(gainAnnuel)} <span class="text-xs font-normal">(+${formaterPourcentage(gainPourcent)})</span>`
+        : '—';
+
+      tr.innerHTML = `
+        <td class="py-3 pr-4 font-medium ${estActuel ? 'text-nuit' : 'text-slate-700'}">${label}</td>
+        <td class="py-3 px-4 text-right text-slate-600">${taux} %</td>
+        <td class="py-3 px-4 text-right font-medium ${estActuel ? 'text-nuit' : 'text-electrique'} resultat-animate">${formaterEuros(caDormantAnnuel)}</td>
+        <td class="py-3 pl-4 text-right ${couleurGain} resultat-animate">${texteGain}</td>
+      `;
+      return tr;
+    }
+
+    /* -------------------------------------------------------
+       Mise à jour complète de l'interface
+    ------------------------------------------------------- */
+    function mettreAJour() {
+      const inputs = lireInputs();
+
+      /* Valeurs invalides → on affiche des tirets */
+      if (!inputs) {
+        affichageCaAnnuel.textContent  = '— €';
+        affichageCaMensuel.textContent = '— €';
+        corpsTableau.innerHTML = '';
+        return;
+      }
+
+      const { nbDevis, valeurDevis, tauxSignature } = inputs;
+
+      /* Calcul de la situation actuelle */
+      const actuel = calculerCaDormant(nbDevis, valeurDevis, tauxSignature);
+
+      /* Affichage du résultat principal */
+      affichageCaAnnuel.textContent  = formaterEuros(actuel.caDormantAnnuel);
+      affichageCaMensuel.textContent = formaterEuros(actuel.caDormantMensuel);
+
+      /* Reconstruction du tableau */
+      corpsTableau.innerHTML = '';
+
+      /* Ligne 1 : situation actuelle */
+      corpsTableau.appendChild(
+        genererLigneTableau(
+          'Situation actuelle',
+          tauxSignature,
+          actuel.caDormantAnnuel,
+          0, 0,
+          true
+        )
+      );
+
+      /* Lignes 2-4 : scénarios d'amélioration */
+      AMELIORATIONS.forEach(delta => {
+        const nouveauTaux = Math.min(tauxSignature + delta, 100); // on plafonne à 100%
+        const scenario    = calculerCaDormant(nbDevis, valeurDevis, nouveauTaux);
+        const gainAnnuel  = actuel.caDormantAnnuel - scenario.caDormantAnnuel;
+
+        /* Gain en % par rapport au CA dormant actuel (évite division par zéro) */
+        const gainPourcent = actuel.caDormantAnnuel > 0
+          ? (gainAnnuel / actuel.caDormantAnnuel) * 100
+          : 0;
+
+        corpsTableau.appendChild(
+          genererLigneTableau(
+            `+${delta} pts de taux`,
+            nouveauTaux,
+            scenario.caDormantAnnuel,
+            gainAnnuel,
+            gainPourcent,
+            false
+          )
+        );
+      });
+    }
+
+    /* -------------------------------------------------------
+       Écouteurs d'événements — recalcul instantané
+    ------------------------------------------------------- */
+    inputNbDevis.addEventListener('input', mettreAJour);
+    inputValeurDevis.addEventListener('input', mettreAJour);
+    inputTauxSignature.addEventListener('input', mettreAJour);
+
+    /* -------------------------------------------------------
+       Année courante dans le footer
+    ------------------------------------------------------- */
+    document.getElementById('annee').textContent = new Date().getFullYear();
+
+    /* -------------------------------------------------------
+       Calcul initial au chargement de la page
+    ------------------------------------------------------- */
+    mettreAJour();
+  </script>
+
+</body>
+</html>
