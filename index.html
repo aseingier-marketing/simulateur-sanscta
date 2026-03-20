@@ -44,7 +44,7 @@
     }
   </style>
 </head>
-<body class="bg-clair font-sans text-nuit min-h-screen py-10 px-4">
+<body class="bg-clair font-sans text-nuit min-h-screen py-6 sm:py-10 px-4">
 
   <!-- ===== CONTAINER PRINCIPAL ===== -->
   <div class="max-w-3xl mx-auto">
@@ -55,7 +55,7 @@
         Combien de C.A représente<br class="hidden sm:block" /> vos devis non signés ?
       </h1>
       <p class="text-slate-500 text-base max-w-lg mx-auto">
-        Renseignez vos chiffres ci-dessous et découvrez en temps réel le montant annuel de votre CA non converti.
+        Renseignez vos chiffres ci-dessous et découvrez en temps réel votre C.A non converti.
       </p>
     </header>
 
@@ -73,12 +73,13 @@
           <input
             id="nbDevis"
             type="number"
+            inputmode="numeric"
             min="1"
             max="500"
             value="20"
             class="w-full rounded-xl border border-slate-300 bg-clair px-4 py-3 text-nuit text-base resultat-animate"
           />
-          <span class="text-xs text-slate-400">Entre 1 et 500</span>
+          <span class="text-xs text-slate-500">Entre 1 et 500</span>
         </div>
 
         <!-- Input 2 : Valeur moyenne -->
@@ -89,12 +90,13 @@
           <input
             id="valeurDevis"
             type="number"
+            inputmode="numeric"
             min="100"
             max="100000"
             value="3500"
             class="w-full rounded-xl border border-slate-300 bg-clair px-4 py-3 text-nuit text-base resultat-animate"
           />
-          <span class="text-xs text-slate-400">Entre 100 € et 100 000 €</span>
+          <span class="text-xs text-slate-500">Entre 100 € et 100 000 €</span>
         </div>
 
         <!-- Input 3 : Taux de signature -->
@@ -105,12 +107,13 @@
           <input
             id="tauxSignature"
             type="number"
+            inputmode="numeric"
             min="0"
             max="100"
             value="25"
             class="w-full rounded-xl border border-slate-300 bg-clair px-4 py-3 text-nuit text-base resultat-animate"
           />
-          <span class="text-xs text-slate-400">Entre 0 % et 100 %</span>
+          <span class="text-xs text-slate-500">Entre 0 % et 100 %</span>
         </div>
 
       </div>
@@ -132,7 +135,9 @@
     <!-- ===== ENCADRÉ PROSPECTS / CIBLE ===== -->
     <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 mb-6">
       <p class="text-slate-700 text-base leading-relaxed">
-        Tous vos prospects ne signeront pas. Certains ne sont pas intéressés, d'autres préféreront le concurrent.<br /><br />
+        Tous vos prospects ne signeront pas. Certains ne sont pas intéressés, d'autres préféreront le concurrent.
+      </p>
+      <p class="text-slate-700 text-base leading-relaxed mt-3">
         Mais il y a aussi les curieux, les indécis, ceux qui comparent...
       </p>
       <p class="text-nuit font-semibold text-base mt-4">
@@ -141,16 +146,16 @@
     </section>
 
     <!-- ===== TABLEAU COMPARATIF ===== -->
-    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 mb-4 overflow-x-auto">
-      <h2 class="text-lg font-semibold text-nuit mb-5">Découvrez le chiffre d'affaires que vous récupérez avec un système de relance :</h2>
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 mb-4">
+      <h2 class="text-lg font-semibold text-nuit mb-5">Découvrez le chiffre d'affaires que vous récupérez avec notre système de relance :</h2>
 
-      <table class="w-full text-sm min-w-[480px]">
+      <table class="w-full text-sm">
         <thead>
           <tr class="border-b border-slate-200">
             <th class="text-left text-slate-500 font-medium pb-3 pr-4">Scénario</th>
-            <th class="text-right text-slate-500 font-medium pb-3 px-4">Taux</th>
-            <th class="text-right text-slate-500 font-medium pb-3 px-4">CA non réalisé / an</th>
-            <th class="text-right text-slate-500 font-medium pb-3 pl-4">Gain vs actuel</th>
+            <th class="hidden sm:table-cell text-right text-slate-500 font-medium pb-3 px-4">Taux</th>
+            <th class="hidden sm:table-cell text-right text-slate-500 font-medium pb-3 px-4">C.A non réalisé / an</th>
+            <th class="text-right text-slate-500 font-medium pb-3 pl-4">Gain récupéré</th>
           </tr>
         </thead>
         <tbody id="tableauScenarios">
@@ -162,19 +167,19 @@
     <!-- ===== TEXTE SOUS LE TABLEAU ===== -->
     <section class="mb-6 px-1">
       <p class="text-slate-700 text-base leading-relaxed font-medium">
-        Avec notre outil de relance personnalisé, nous visons un <span class="font-bold text-nuit">gain minimum de 10 %</span> sur votre taux de transformation — ce qui représente <span id="gainMinimum" class="font-semibold text-emerald-600 resultat-animate">— €</span> de CA récupéré pour votre entreprise.
+        Nous visons un <span class="font-bold text-nuit">gain minimum de 10 %</span> sur votre taux de transformation — ce qui représente <span id="gainMinimum" class="font-semibold text-emerald-600 resultat-animate">— €</span> de C.A récupéré pour votre entreprise.
       </p>
       <p class="text-nuit text-base leading-relaxed font-bold mt-3">
-        Sans changement d'outil. Sans dépenses publicitaires. Uniquement un système de relance.
+        Sans changement d'outil. Sans dépenses publicitaires. Uniquement nos relances.
       </p>
     </section>
 
     <!-- ===== EXPLICATION PÉDAGOGIQUE ===== -->
     <section class="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-8 text-sm text-slate-600">
-      <p class="font-medium text-nuit mb-1">Comment est calculé le CA non réalisé ?</p>
+      <p class="font-medium text-nuit mb-1">Comment est calculé le C.A non réalisé ?</p>
       <p>
         <span class="font-mono bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs text-nuit">
-          CA non réalisé = devis × valeur × (1 − taux de transformation)
+          C.A non réalisé = devis × valeur × (1 − taux de transformation)
         </span>
       </p>
       <p class="mt-2">
@@ -192,7 +197,7 @@
         href="https://cal.com/a.seingier-virtuodev/20min"
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-block bg-electrique hover:bg-blue-600 text-white font-semibold text-base px-8 py-4 rounded-xl transition-colors duration-150 shadow-md hover:shadow-lg"
+        class="inline-block w-full sm:w-auto bg-electrique hover:bg-blue-600 text-white font-semibold text-base px-8 py-4 rounded-xl transition-colors duration-150 shadow-md hover:shadow-lg"
       >
         Réserver mon diagnostic gratuit →
       </a>
@@ -292,9 +297,12 @@
         : '—';
 
       tr.innerHTML = `
-        <td class="py-3 pr-4 font-medium ${estActuel ? 'text-nuit' : 'text-slate-700'}">${label}</td>
-        <td class="py-3 px-4 text-right text-slate-600">${taux} %</td>
-        <td class="py-3 px-4 text-right font-medium ${estActuel ? 'text-nuit' : 'text-electrique'} resultat-animate">${formaterEuros(caDormantAnnuel)}</td>
+        <td class="py-3 pr-4 font-medium ${estActuel ? 'text-nuit' : 'text-slate-700'}">
+          ${label}
+          <span class="sm:hidden block text-xs text-slate-400 font-normal mt-0.5">Taux : ${taux} %</span>
+        </td>
+        <td class="hidden sm:table-cell py-3 px-4 text-right text-slate-600">${taux} %</td>
+        <td class="hidden sm:table-cell py-3 px-4 text-right font-medium ${estActuel ? 'text-nuit' : 'text-electrique'} resultat-animate">${formaterEuros(caDormantAnnuel)}</td>
         <td class="py-3 pl-4 text-right ${couleurGain} resultat-animate">${texteGain}</td>
       `;
       return tr;
